@@ -33,7 +33,7 @@ jobs:
          echo "TAG_VERSION = ${{ env.TAG_VERSION }}"
      - name: Tar
        run: |
-         tar -C=repo/rust-connectors/sources/${{ github.event.inputs.name }} -zcvf release.tar.gz ./
+         tar -C repo/rust-connectors/sources/${{ github.event.inputs.name }} -zcvf release.tar.gz ./
      - name: Release
        uses: actions/create-release@v1
        id: create_release
