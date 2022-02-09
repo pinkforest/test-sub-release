@@ -22,8 +22,6 @@ jobs:
    steps:
      - name: Checkout repository
        uses: actions/checkout@v2
-     - name: Show GITHUB env
-       run: env
      - name: Set Environment ${{ env.INPUT_CONNECTOR }}
        shell: bash
        run: |
