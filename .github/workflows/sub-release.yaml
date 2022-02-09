@@ -22,7 +22,7 @@ jobs:
    steps:
      - name: Checkout repository
        uses: actions/checkout@v2
-     - name: Set Environment
+     - name: Set Environment ${{ env.INPUT_CONNECTOR }}
        shell: bash
        run: |
          echo "TAG_VERSION=`grep -m 1 -oP 'version\s*=\s*\"\K\d+\.\d+\.\d+(?=\")' rust-connectors/sources/${{ env.INPUT_CONNECTOR }}/Cargo.toml`" | tee -a $GITHUB_ENV
