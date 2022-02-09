@@ -33,7 +33,7 @@ jobs:
          echo "TAG_VERSION = ${{ env.TAG_VERSION }}"
      - name: Tar
        run: |
-         tar -C repo/rust-connectors/sources/${{ github.event.inputs.name }} -zcvf release.tar.gz ./
+         tar --directory=repo/rust-connectors/sources/${{ github.event.inputs.name }} -zcvf release.tar.gz ./
      - name: Release
        uses: actions/create-release@v1
        id: create_release
@@ -50,7 +50,8 @@ jobs:
          GITHUB_TOKEN: ${{ github.token }}
        with:
          upload_url: ${{ steps.create_release.outputs.upload_url }}
-         asset_path: ./repo/rust-connectors/sources/${{ github.event.inputs.name }}/release.tar.gz
+# /repo/rust-connectors/sources/${{ github.event.inputs.name }}/release.tar.gz
+         asset_path: ./release.tar.gz
          asset_name: fluvio-connect-${{ github.event.inputs.name }}.tar.gz
          asset_content_type: application/gzip
 #     - name: Create GitHub release
