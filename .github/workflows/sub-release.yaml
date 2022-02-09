@@ -22,7 +22,7 @@ jobs:
      - name: Set Envirionment
        shell: bash
        run: |
-         echo "TAG_VERSION=egrep \"## ${{ matrix_rust_candidates }} Version [[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+ - UNRELEASED\" rust-connectors/sources/${{ matrix.rust_candidate }}/CHANGELOG.md | tee -a $GITHUB_ENV
+         echo "TAG_VERSION=egrep \"## ${{ matrix.rust_candidate }} Version [[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+ - UNRELEASED\" rust-connectors/sources/${{ matrix.rust_candidate }}/CHANGELOG.md | tee -a $GITHUB_ENV
      - name: Print Environment
        run: |
          echo "TAG_VERSION = ${{ env.TAG_VERSION }}"
