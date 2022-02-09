@@ -32,12 +32,12 @@ jobs:
           toolchain: ${{ matrix.rust }}
           override: true
           target: ${{ matrix.rust-target }}
-      - name: Install zig
-        run: ./repo/actions/zig-install.sh ${{ matrix.os }}
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
           path: repo
+      - name: Install zig
+        run: ./repo/actions/zig-install.sh ${{ matrix.os }}
       - name: Set Environment ${{ github.event.inputs.name }}
         shell: bash
         run: |
