@@ -50,6 +50,15 @@ jobs:
           tag_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }} 
         env:
           GITHUB_TOKEN: ${{ github.token }}
+      - name: Upload Connector Source
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release-src.tar.gz
+          asset_name: fluvio-connect-${{ github.event.inputs.name }}-src.tar.gz
+          asset_content_type: application/gzip
       - name: Install Rust ${{ matrix.rust }}
         uses: actions-rs/toolchain@v1
         with:
@@ -65,15 +74,6 @@ jobs:
         run: cargo build --release --bin ${{ github.event.inputs.name }}
       - name: Ls
         run: ls -laR /
-      - name: Upload Connector Source
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release-src.tar.gz
-          asset_name: fluvio-connect-${{ github.event.inputs.name }}-src.tar.gz
-          asset_content_type: application/gzip
 #     - name: Create GitHub release
 #       id: release
 #       uses: softprops/action-gh-release@v1
