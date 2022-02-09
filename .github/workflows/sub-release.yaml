@@ -33,7 +33,7 @@ jobs:
          echo "TAG_VERSION = ${{ env.TAG_VERSION }}"
      - name: Tar
        run: |
-         tar --directory=repo/rust-connectors/sources/${{ github.event.inputs.name }} -zcvf release.tar.gz ./
+         tar --directory=repo/rust-connectors/sources/${{ github.event.inputs.name }} -zcvf release-src.tar.gz ./
      - name: Release
        uses: actions/create-release@v1
        id: create_release
@@ -44,16 +44,28 @@ jobs:
          tag_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }} 
        env:
          GITHUB_TOKEN: ${{ github.token }}
-     - name: Upload Connector Source
-       uses: actions/upload-release-asset@v1
-       env:
-         GITHUB_TOKEN: ${{ github.token }}
-       with:
-         upload_url: ${{ steps.create_release.outputs.upload_url }}
-# /repo/rust-connectors/sources/${{ github.event.inputs.name }}/release.tar.gz
-         asset_path: ./release.tar.gz
-         asset_name: fluvio-connect-${{ github.event.inputs.name }}.tar.gz
-         asset_content_type: application/gzip
+      - name: Install Rust ${{ matrix.rust }}
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust }}
+          override: true
+          target: ${{ matrix.rust-target }}
+      - name: Install zig
+        run: /actions/zig-install.sh ${{ matrix.os }}
+      - uses: Swatinem/rust-cache@v1
+        with:
+          key: ${{ matrix.os }}-${{ matrix.rust-target }}-${{ github.event.inputs.name }}
+      - name: Build
+        run: cargo build --release --bin ${{ github.event.inputs.name }}
+      - name: Upload Connector Source
+        uses: actions/upload-release-asset@v1
+          env:
+            GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release-src.tar.gz
+          asset_name: fluvio-connect-${{ github.event.inputs.name }}-src.tar.gz
+          asset_content_type: application/gzip
 #     - name: Create GitHub release
 #       id: release
 #       uses: softprops/action-gh-release@v1
