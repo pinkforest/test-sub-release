@@ -13,35 +13,12 @@ on:
 
 jobs:
   release:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        rust: [stable]
-        rust-target:
-          - x86_64-unknown-linux-musl
-#          - aarch64-unknown-linux-musl
-    env:
-      RUST_BACKTRACE: full
-      RUSTV: ${{ matrix.rust }}
-      TARGET: ${{ matrix.rust-target }}
+    runs-on: ubuntu-latest
     steps:
-      - name: Install Rust ${{ matrix.rust }}
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: ${{ matrix.rust }}
-          override: true
-          target: ${{ matrix.rust-target }}
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
           path: repo
-      - name: Install zig
-        run: ./repo/actions/zig-install.sh ${{ matrix.os }}
-      - name: Set Environment ${{ github.event.inputs.name }}
-        shell: bash
-        run: |
-          echo "TAG_VERSION=`grep -m 1 -oP 'version\s*=\s*\"\K\d+\.\d+\.\d+(?=\")' repo/rust-connectors/sources/${{ github.event.inputs.name }}/Cargo.toml`" | tee -a $GITHUB_ENV
       - name: Print Environment
         run: |
           echo "TAG_VERSION = ${{ env.TAG_VERSION }}"
@@ -54,7 +31,7 @@ jobs:
         with:
           draft: false
           prerelease: false
-          release_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }}
+#          release_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }}
           tag_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }} 
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -67,12 +44,6 @@ jobs:
           asset_path: ./release-src.tar.gz
           asset_name: fluvio-connect-${{ github.event.inputs.name }}-src.tar.gz
           asset_content_type: application/gzip
-      - name: Ls-1
-        run: ls -laR ./
-      - name: Build
-        run: cd repo/rust-connectors/sources/${{ github.event.inputs.name }}; cargo build --target-dir ${{ matrix.rust-target }} --target ${{ matrix.rust-target }} --release --bin ${{ github.event.inputs.name }}
-      - name: Ls-2
-        run: ls -laR ./
 #     - name: Create GitHub release
 #       id: release
 #       uses: softprops/action-gh-release@v1
