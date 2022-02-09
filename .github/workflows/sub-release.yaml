@@ -1,0 +1,29 @@
+name: ConnectorRelease
+on: push
+
+jobs:
+ release:
+   runs-on: [ ubuntu-latest ]
+   strategy:
+     matrix:
+       os: [ubuntu-latest]
+       rust: [stable]
+       rust-target: [x86_64-unknown-linux-gnu]
+       rust_candidate: [http, mqtt]
+   steps:
+     - name: Rust Connector Release
+       if: starts_with(github.event.head_commit.message, format('chore(release): {0}', ${{ matrix.rust_candidate }})
+       run: |
+         echo "Running Rust ${{ matrix.rust_candidates }} Connector Release"
+     - name: Checkout repository
+       uses: actions/checkout@v2
+       with:
+         fetch-depth: 1
+     - name: Set Envirionment
+       shell: bash
+       run: |
+         echo "TAG_VERSION=egrep \"## ${{ matrix_rust_candidates }} Version [[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+ - UNRELEASED\" rust-connectors/sources/${{ matrix.rust_candidate }}/CHANGELOG.md | tee -a $GITHUB_ENV
+     - name: Print Environment
+       run: |
+         echo "TAG_VERSION = ${{ env.TAG_VERSION }}"
+
