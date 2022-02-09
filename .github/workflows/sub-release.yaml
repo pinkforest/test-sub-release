@@ -12,44 +12,44 @@ on:
         required: true
 
 jobs:
- release:
-   runs-on: [ ubuntu-latest ]
-   strategy:
-     matrix:
-       os: [ubuntu-latest]
-       rust: [stable]
-       rust-target:
-         - x86_64-unknown-linux-musl
-         - aarch64-unknown-linux-musl
-   env:
-     RUST_BACKTRACE: full
-     RUSTV: ${{ matrix.rust }}
-     TARGET: ${{ matrix.rust-target }}
-   steps:
-     - name: Checkout repository
-       uses: actions/checkout@v2
-       with:
-         path: repo
-     - name: Set Environment ${{ github.event.inputs.name }}
-       shell: bash
-       run: |
-         echo "TAG_VERSION=`grep -m 1 -oP 'version\s*=\s*\"\K\d+\.\d+\.\d+(?=\")' repo/rust-connectors/sources/${{ github.event.inputs.name }}/Cargo.toml`" | tee -a $GITHUB_ENV
-     - name: Print Environment
-       run: |
-         echo "TAG_VERSION = ${{ env.TAG_VERSION }}"
-     - name: Tar
-       run: |
-         tar --directory=repo/rust-connectors/sources/${{ github.event.inputs.name }} -zcvf release-src.tar.gz ./
-     - name: Release
-       uses: actions/create-release@v1
-       id: create_release
-       with:
-         draft: false
-         prerelease: false
-         release_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }}
-         tag_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }} 
-       env:
-         GITHUB_TOKEN: ${{ github.token }}
+  release:
+    runs-on: [ ubuntu-latest ]
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        rust: [stable]
+        rust-target:
+          - x86_64-unknown-linux-musl
+          - aarch64-unknown-linux-musl
+    env:
+      RUST_BACKTRACE: full
+      RUSTV: ${{ matrix.rust }}
+      TARGET: ${{ matrix.rust-target }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          path: repo
+      - name: Set Environment ${{ github.event.inputs.name }}
+        shell: bash
+        run: |
+          echo "TAG_VERSION=`grep -m 1 -oP 'version\s*=\s*\"\K\d+\.\d+\.\d+(?=\")' repo/rust-connectors/sources/${{ github.event.inputs.name }}/Cargo.toml`" | tee -a $GITHUB_ENV
+      - name: Print Environment
+        run: |
+          echo "TAG_VERSION = ${{ env.TAG_VERSION }}"
+      - name: Tar
+        run: |
+          tar --directory=repo/rust-connectors/sources/${{ github.event.inputs.name }} -zcvf release-src.tar.gz ./
+      - name: Release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: false
+          prerelease: false
+          release_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }}
+          tag_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }} 
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - name: Install Rust ${{ matrix.rust }}
         uses: actions-rs/toolchain@v1
         with:
