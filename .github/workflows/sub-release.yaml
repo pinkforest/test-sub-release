@@ -19,8 +19,8 @@ jobs:
         os: [ubuntu-latest]
         rust: [stable]
         rust-target:
-#          - x86_64-unknown-linux-musl
-          - aarch64-unknown-linux-musl
+          - x86_64-unknown-linux-musl
+#          - aarch64-unknown-linux-musl
     env:
       RUST_BACKTRACE: full
       RUSTV: ${{ matrix.rust }}
