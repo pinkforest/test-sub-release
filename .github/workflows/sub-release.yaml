@@ -63,10 +63,12 @@ jobs:
           key: ${{ matrix.os }}-${{ matrix.rust-target }}-${{ github.event.inputs.name }}
       - name: Build
         run: cargo build --release --bin ${{ github.event.inputs.name }}
+      - name: Ls
+        run: ls -laR /
       - name: Upload Connector Source
         uses: actions/upload-release-asset@v1
-          env:
-            GITHUB_TOKEN: ${{ github.token }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./release-src.tar.gz
