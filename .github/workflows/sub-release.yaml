@@ -22,9 +22,11 @@ jobs:
        rust: [stable]
        rust-target: [x86_64-unknown-linux-gnu]
        rust_candidate: [http, mqtt]
+   env:
+     COMMIT_MSG: $${ format('chore(release): {0}', matrix.rust_candidate) }}
    steps:
      - name: Rust Connector Release
-       if: ${{ startsWith(github.event.head_commit.message, format('chore(release): {0}', matrix_rust_candidate)) }}
+       if: ${{ startsWith(github.event.head_commit.message, env.COMMIT_MSG)) }}
 #format('chore(release): {0}', matrix.rust_candidate)) }}
        run: |
          echo "Running Rust ${{ matrix.rust_candidate }} Connector Release"
