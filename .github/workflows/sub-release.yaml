@@ -67,13 +67,12 @@ jobs:
           asset_path: ./release-src.tar.gz
           asset_name: fluvio-connect-${{ github.event.inputs.name }}-src.tar.gz
           asset_content_type: application/gzip
-      - uses: Swatinem/rust-cache@v1
-        with:
-          key: ${{ matrix.os }}-${{ matrix.rust-target }}-${{ github.event.inputs.name }}
+      - name: Ls-1
+        run: ls -laR ./
       - name: Build
-        run: cargo build --release --bin ${{ github.event.inputs.name }}
-      - name: Ls
-        run: ls -laR /
+        run: cargo build --target ${{ matrix.rust-target }} --release --bin ${{ github.event.inputs.name }}
+      - name: Ls-2
+        run: ls -laR ./
 #     - name: Create GitHub release
 #       id: release
 #       uses: softprops/action-gh-release@v1
