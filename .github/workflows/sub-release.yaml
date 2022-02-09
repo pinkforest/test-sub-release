@@ -13,7 +13,7 @@ on:
 
 jobs:
   release:
-    runs-on: [ ubuntu-latest ]
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -26,6 +26,14 @@ jobs:
       RUSTV: ${{ matrix.rust }}
       TARGET: ${{ matrix.rust-target }}
     steps:
+      - name: Install Rust ${{ matrix.rust }}
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust }}
+          override: true
+          target: ${{ matrix.rust-target }}
+      - name: Install zig
+        run: ./actions/zig-install.sh ${{ matrix.os }}
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
@@ -59,14 +67,6 @@ jobs:
           asset_path: ./release-src.tar.gz
           asset_name: fluvio-connect-${{ github.event.inputs.name }}-src.tar.gz
           asset_content_type: application/gzip
-      - name: Install Rust ${{ matrix.rust }}
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: ${{ matrix.rust }}
-          override: true
-          target: ${{ matrix.rust-target }}
-      - name: Install zig
-        run: /actions/zig-install.sh ${{ matrix.os }}
       - uses: Swatinem/rust-cache@v1
         with:
           key: ${{ matrix.os }}-${{ matrix.rust-target }}-${{ github.event.inputs.name }}
