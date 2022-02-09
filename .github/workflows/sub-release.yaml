@@ -29,4 +29,12 @@ jobs:
      - name: Print Environment
        run: |
          echo "TAG_VERSION = ${{ env.TAG_VERSION }}"
-
+     - name: Create GitHub release
+       id: release
+       uses: actions/create-release@v1
+       env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+       with:
+         tag_name: fluvio-connect-$${ github.event.inputs.name }}-${{ env.TAG_VERSION }}
+         release_name: fluvio-connect-$${ github.event.inputs.name }}-${{ env.TAG_VERSION }}
+         body_path: rust-connectors/sources/${{ github.event.inputs.name }}
