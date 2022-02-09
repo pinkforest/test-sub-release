@@ -24,16 +24,10 @@ jobs:
        uses: actions/checkout@v2
        with:
          path: repo
-     - name: Copy Connector Out
-       run: |
-         cp -R repo/rust-connectors/sources/${{ github.event.inputs.name }}/* ./
-     - name: Remove Repo
-       run: |
-         rm -rf repo 
      - name: Set Environment ${{ github.event.inputs.name }}
        shell: bash
        run: |
-         echo "TAG_VERSION=`grep -m 1 -oP 'version\s*=\s*\"\K\d+\.\d+\.\d+(?=\")' Cargo.toml`" | tee -a $GITHUB_ENV
+         echo "TAG_VERSION=`grep -m 1 -oP 'version\s*=\s*\"\K\d+\.\d+\.\d+(?=\")' rust-connectors/sources/${{ github.event.inputs.name }}/Cargo.toml`" | tee -a $GITHUB_ENV
      - name: Print Environment
        run: |
          echo "TAG_VERSION = ${{ env.TAG_VERSION }}"
@@ -45,6 +39,8 @@ jobs:
        with:
          tag_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }}
          release_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }}
+         artifacts:
+           rust-connectors/sources/${{ github.event.inputs.name }}/
 # see; https://github.com/actions/upload-release-asset - prefer automated pulls
 #     - name: Upload Release Asset
 #       id: upload-release-asset 
