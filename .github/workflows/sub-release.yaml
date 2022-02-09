@@ -18,7 +18,13 @@ jobs:
      matrix:
        os: [ubuntu-latest]
        rust: [stable]
-       rust-target: [x86_64-unknown-linux-gnu]
+       rust-target:
+         - x86_64-unknown-linux-musl
+         - aarch64-unknown-linux-musl
+   env:
+     RUST_BACKTRACE: full
+     RUSTV: ${{ matrix.rust }}
+     TARGET: ${{ matrix.rust-target }}
    steps:
      - name: Checkout repository
        uses: actions/checkout@v2
