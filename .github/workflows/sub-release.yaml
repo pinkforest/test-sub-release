@@ -43,8 +43,8 @@ jobs:
        env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
        with:
-         tag_name: v${{ env.TAG_VERSION }}-connect-${{ github.event.inputs.name }}
-         release_name: v${{ env.TAG_VERSION }}-connect-${{ github.event.inputs.name }}
+         tag_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }}
+         release_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }}
 # see; https://github.com/actions/upload-release-asset - prefer automated pulls
 #     - name: Upload Release Asset
 #       id: upload-release-asset 
