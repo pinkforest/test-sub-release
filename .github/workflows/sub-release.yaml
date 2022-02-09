@@ -23,7 +23,7 @@ jobs:
        rust-target: [x86_64-unknown-linux-gnu]
        rust_candidate: [http, mqtt]
    env:
-     COMMIT_MSG: "chore(release): ${{ matrix.rust_candidate) }}"
+     COMMIT_MSG: "chore(release): ${{ matrix.rust_candidate }}"
    steps:
      - name: Rust Connector Release
        if: ${{ startsWith(github.event.head_commit.message, env.COMMIT_MSG) }}
