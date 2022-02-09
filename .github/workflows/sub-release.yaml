@@ -11,8 +11,9 @@ on:
           - mqtt
         required: true
 
-jobs:
+runs:
  release:
+   using: composite
    runs-on: [ ubuntu-latest ]
    strategy:
      matrix:
