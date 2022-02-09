@@ -12,7 +12,7 @@ jobs:
        rust_candidate: [http, mqtt]
    steps:
      - name: Rust Connector Release
-       if: starts_with(github.event.head_commit.message, format('chore(release): {0}', ${{ matrix.rust_candidate }})
+       if: starts_with(github.event.head_commit.message, format('chore(release): {0}', ${{ matrix.rust_candidate }}))
        run: |
          echo "Running Rust ${{ matrix.rust_candidates }} Connector Release"
      - name: Checkout repository
