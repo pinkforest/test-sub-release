@@ -2,16 +2,16 @@ name: ConnectorRelease
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
-
-#inputs:
-#  connector:
-#    description: 'Connector Name'
-#    required: true
-#  version:
-#    description: 'Release Version'
-#    required: true
+#  push:
+#    branches: [ main ]
+#
+    inputs:
+      connector:
+        description: 'Connector Name'
+        required: true
+      version:
+        description: 'Release Version'
+        required: true
 
 jobs:
  release:
