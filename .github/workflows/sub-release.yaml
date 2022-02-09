@@ -33,7 +33,7 @@ jobs:
           override: true
           target: ${{ matrix.rust-target }}
       - name: Install zig
-        run: ./actions/zig-install.sh ${{ matrix.os }}
+        run: ./repo/actions/zig-install.sh ${{ matrix.os }}
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
