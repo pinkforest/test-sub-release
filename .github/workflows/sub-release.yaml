@@ -1,10 +1,10 @@
 name: ConnectorRelease
 
-on:
-  workflow_dispatch:
-  push:
-    branches: [ main ]
-
+#on:
+#  workflow_dispatch:
+#  push:
+#    branches: [ main ]
+#
 inputs:
   connector:
     description: 'Connector Name'
