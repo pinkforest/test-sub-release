@@ -22,12 +22,10 @@ jobs:
    steps:
      - name: Checkout repository
        uses: actions/checkout@v2
-#       with:
-#         fetch-depth: 1
      - name: Set Environment
        shell: bash
        run: |
-         echo "TAG_VERSION=grep -m 1 -oP 'version\s*=\s*"\K\d+\.\d+\.\d+(?=")' rust-connectors/sources/${{ env.CONNECTOR_NAME}}/Cargo.toml | tee -a $GITHUB_ENV
+         echo "TAG_VERSION=grep -m 1 -oP 'version\s*=\s*\"\K\d+\.\d+\.\d+(?=\")' rust-connectors/sources/${{ env.INPUT_CONNECTOR_NAME}}/Cargo.toml | tee -a $GITHUB_ENV
      - name: Print Environment
        run: |
          echo "TAG_VERSION = ${{ env.TAG_VERSION }}"
