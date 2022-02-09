@@ -70,7 +70,7 @@ jobs:
       - name: Ls-1
         run: ls -laR ./
       - name: Build
-        run: cargo build --target-dir ${{ matrix.rust-target }} --manifest-path repo/rust-connectors/sources/${{ github.event.inputs.name }}/Cargo.toml --target ${{ matrix.rust-target }} --release --bin ${{ github.event.inputs.name }}
+        run: cd repo/rust-connectors/sources/${{ github.event.inputs.name }}; cargo build --target-dir ${{ matrix.rust-target }} --target ${{ matrix.rust-target }} --release --bin ${{ github.event.inputs.name }}
       - name: Ls-2
         run: ls -laR ./
 #     - name: Create GitHub release
