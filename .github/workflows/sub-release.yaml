@@ -31,16 +31,36 @@ jobs:
      - name: Print Environment
        run: |
          echo "TAG_VERSION = ${{ env.TAG_VERSION }}"
-     - name: Create GitHub release
-       id: release
-       uses: softprops/action-gh-release@v1
+     - name: Tar
+       run: |
+         tar -zcvf foobar.tar.gz repo/rust-connectors/sources
+     - name: Release
+         uses: actions/create-release@v1
+         id: create_release
+         with:
+           draft: false
+           prerelease: false
+           release_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }}
+           tag_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }} 
        env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         GITHUB_TOKEN: ${{ github.token }}
+     - name: Upload Connector Source
+       uses: actions/upload-release-asset@v1
+       env:
+         GITHUB_TOKEN: ${{ github.token }}
        with:
-         tag_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }}
-         name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }}
-         files: |
-          rust-connectors/sources/${{ github.event.inputs.name }}/
+         upload_url: ${{ steps.create_release.outputs.upload_url }}
+         asset_path: ./foobar.tar.gz
+       asset_name: foobar.tar.gz
+       asset_content_type: application/gzip
+#     - name: Create GitHub release
+#       id: release
+#       uses: softprops/action-gh-release@v1
+#       with:
+#         tag_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }}
+#         name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }}
+#         files: |
+#          rust-connectors/sources/${{ github.event.inputs.name }}/
 # see; https://github.com/actions/upload-release-asset - prefer automated pulls
 #     - name: Upload Release Asset
 #       id: upload-release-asset 
