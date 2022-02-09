@@ -3,7 +3,7 @@ name: RustConnectorRelease
 on:
   workflow_dispatch:
     inputs:
-      connector:
+      name:
         description: 'Connector'
         type: choice
         options:
@@ -22,10 +22,10 @@ jobs:
    steps:
      - name: Checkout repository
        uses: actions/checkout@v2
-     - name: Set Environment ${{ env.INPUT_CONNECTOR }}
+     - name: Set Environment ${{ inputs.name }}
        shell: bash
        run: |
-         echo "TAG_VERSION=`grep -m 1 -oP 'version\s*=\s*\"\K\d+\.\d+\.\d+(?=\")' rust-connectors/sources/${{ env.INPUT_CONNECTOR }}/Cargo.toml`" | tee -a $GITHUB_ENV
+         echo "TAG_VERSION=`grep -m 1 -oP 'version\s*=\s*\"\K\d+\.\d+\.\d+(?=\")' rust-connectors/sources/${{ inputs.name }}/Cargo.toml`" | tee -a $GITHUB_ENV
      - name: Print Environment
        run: |
          echo "TAG_VERSION = ${{ env.TAG_VERSION }}"
