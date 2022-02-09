@@ -35,13 +35,13 @@ jobs:
        run: |
          tar -zcvf foobar.tar.gz repo/rust-connectors/sources
      - name: Release
-         uses: actions/create-release@v1
-         id: create_release
-         with:
-           draft: false
-           prerelease: false
-           release_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }}
-           tag_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }} 
+       uses: actions/create-release@v1
+       id: create_release
+       with:
+         draft: false
+         prerelease: false
+         release_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }}
+         tag_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }} 
        env:
          GITHUB_TOKEN: ${{ github.token }}
      - name: Upload Connector Source
