@@ -29,16 +29,29 @@ jobs:
       - name: Tar
         run: |
           tar --directory=repo/rust-connectors/sources/${{ github.event.inputs.name }} -zcvf release-src.tar.gz ./
-      - name: Release
-        uses: actions/create-release@v1
-        id: create_release
+      - name: Ls
+        run: |
+          ls -laR ./
+      - name: Release 
+        uses: ncipollo/release-action@v1
         with:
+          tag: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }}
           draft: false
           prerelease: false
+          allowUpdates: true
+          generateReleaseNotes: true
+          artifacts: "./release-src.tar.gz"
+          token: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Release
+#        uses: actions/create-release@v1
+#        id: create_release
+#        with:
+#          draft: false
+#          prerelease: false
 #          release_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }}
-          tag_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }} 
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+#          tag_name: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }} 
+#        env:
+#          GITHUB_TOKEN: ${{ github.token }}
       - name: Upload Connector Source
         uses: actions/upload-release-asset@v1
         env:
