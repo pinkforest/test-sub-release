@@ -38,6 +38,7 @@ jobs:
           tag: v${{ env.TAG_VERSION }}-${{ github.event.inputs.name }}
           draft: false
           prerelease: false
+          commit: 4b825dc642cb6eb9a060e54bf8d69288fbee4904
           allowUpdates: true
           generateReleaseNotes: true
           artifacts: "./release-src.tar.gz"
